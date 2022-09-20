@@ -22,3 +22,7 @@ X = ['SARS/COV2', 'MERS/COV2', 'MERS/SARS']
 Y = [SARS_COV/ len(SARS.seq) * 100, MERS_COV/ len(MERS.seq)*100, MERS_SARS/len(SARS.seq)*100]
 plt.title('Sequence identity (%)')
 plt.bar(X,Y,color=(0.2, 0.4, 0.6, 0.6))
+
+print(SARS)
+print(MERS)
+print(COV2)
