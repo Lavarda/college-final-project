@@ -8,7 +8,8 @@ from Bio import SeqIO
 from Bio import pairwise2
 
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC # import SVC classifier
+from sklearn.metrics import accuracy_score # import metrics to compute accuracy
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -43,21 +44,30 @@ df = pd.DataFrame(df_data, index=df_indexs)
 # Selecting the data to create the train dataset and the corresponding dataset to use.
 X = df.drop(['Seq'], axis=1)
 y = df['Seq']
+print('X', X)
+print('Y', y)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 0)
-print(X_train.shape, X_test.shape)
 
-# ...
+# Create the trainsets 
 cols = X_train.columns
-print(cols)
-scaler = StandardScaler()
-X_train = scaler.fit_transform(X_train)
-X_test = scaler.transform(X_test)
 
 X_train = pd.DataFrame(X_train, columns=[cols])
 X_test = pd.DataFrame(X_test, columns=[cols])
 
-print(X_train.describe())
+print(X_train) # Pq ta tudo NaN?
+ 
+# instantiate classifier with default hyperparameters
+svc=SVC() 
+
+# fit classifier to training set
+svc.fit(X_train,y_train)
+
+# make predictions on test set
+y_pred=svc.predict(X_test)
+
+# compute and print accuracy score
+print('Model accuracy score with default hyperparameters: {0:0.4f}'. format(accuracy_score(y_test, y_pred)))
 
 #SARS_COV = pairwise2.align.globalxx(SARS.seq, COV2.seq, one_alignment_only=True, score_only=True)
 #print('SARS/COV Similarity (%):', SARS_COV / len(SARS.seq) * 100)
